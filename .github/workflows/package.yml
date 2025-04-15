@@ -15,17 +15,11 @@ jobs:
         image: [windows-latest]
     runs-on: ${{ matrix.image }}
 
-    env:
-      CSC_IDENTITY_AUTO_DISCOVERY: true
-      CSC_LINK: ${{ secrets.CSC_LINK }}
-      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       # --- Windows Azure OIDC Login and Sign ---
       - name: Log in to Azure (Windows Only)
         if: matrix.os == 'windows-latest'
-        uses: azure/login@v2.3.0
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
