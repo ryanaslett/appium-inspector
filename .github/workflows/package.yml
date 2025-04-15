@@ -25,7 +25,7 @@ jobs:
       # --- Windows Azure OIDC Login and Sign ---
       - name: Log in to Azure (Windows Only)
         if: matrix.os == 'windows-latest'
-        uses: azure/login@v1
+        uses: azure/login@v2.3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}fs
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
