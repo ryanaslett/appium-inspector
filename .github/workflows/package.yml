@@ -1,15 +1,13 @@
 name: Create packages
 
 on:
-  workflow_dispatch:
   push:
-    tags:
-      - '*'
+    branches: [main]
 
 permissions:
   id-token: write
   contents: read
-  
+
 jobs:
   electron:
     strategy:
