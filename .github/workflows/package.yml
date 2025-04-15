@@ -35,7 +35,7 @@ jobs:
         with:
           azPSVersion: "latest"
           inlineScript: |
-            Get-AzContext
+            Get-AzContext -ErrorAction
 
       # - uses: actions/checkout@v4
       # - name: Use Node.js LTS
