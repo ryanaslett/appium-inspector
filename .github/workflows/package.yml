@@ -20,23 +20,42 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+      # --- Windows Azure OIDC Login and Sign ---
+      - name: Log in to Azure (Windows Only)
+        if: matrix.os == 'windows-latest'
+        uses: azure/login@v1
         with:
-          node-version: lts/*
-          cache: 'npm'
-      - name: Install dependencies (Node.js)
-        run: npm ci
-      - name: Build electron app
-        run: npm run build:electron
-      - name: build package
-        run: npx electron-builder build --x64 --arm64 --publish always
-      - name: Upload built packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-${{ matrix.image }}
-          path: release/
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: false
+
+      # - uses: actions/checkout@v4
+      # - name: Use Node.js LTS
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: lts/*
+      #     cache: 'npm'
+      # - name: Install dependencies (Node.js)
+      #   run: npm ci
+      # - name: Build electron app
+      #   run: npm run build:electron
+
+      # - name: build package
+      #   if: matrix.os == 'windows-latest'
+      #   env:
+      #     # Prevent electron-builder from auto-signing Windows
+      #     CSC_IDENTITY_AUTO_DISCOVERY: false
+      #     # DO NOT add WIN_CSC_* or Azure signing env vars here
+      #   run: npx electron-builder build --x64 --arm64 --publish always
+
+      # - name: Upload built packages
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: artifact-${{ matrix.image }}
+      #     path: release/
+
+
 
   # plugin:
   #   runs-on: ubuntu-latest
