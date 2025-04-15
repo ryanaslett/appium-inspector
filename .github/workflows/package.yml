@@ -35,7 +35,19 @@ jobs:
         with:
           azPSVersion: "latest"
           inlineScript: |
-            Get-AzContext -ErrorAction Stop
+            Write-Host "Attempting to retrieve Azure context details..."
+
+            $context = Get-AzContext -ErrorAction Stop
+
+            # Print details if successful
+            Write-Host "Login Successful! Details below:"
+            Write-Host "------------------------------------"
+            Write-Host "Subscription Name: $($context.Subscription.Name)"
+            Write-Host "Subscription ID:   $($context.Subscription.Id)"
+            Write-Host "Tenant ID:         $($context.Tenant.Id)"
+            Write-Host "Account ID (Principal): $($context.Account.Id)" # Often AppID for SPN
+            Write-Host "Account Type:      $($context.Account.Type)"    # Should be ServicePrincipal
+            Write-Host "------------------------------------"
 
       # - uses: actions/checkout@v4
       # - name: Use Node.js LTS
